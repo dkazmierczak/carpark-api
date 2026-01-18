@@ -43,4 +43,11 @@ public class ParkingRepository {
                 .filter(space -> !space.isOccupied())
                 .findFirst();
     }
+
+    public Optional<ParkingSpace> findByVehicleReg(String vehicleReg) {
+        return parkingSpaces.stream()
+                .filter(space -> space.isOccupied() &&
+                        space.getVehicleReg().equalsIgnoreCase(vehicleReg))
+                .findFirst();
+    }
 }

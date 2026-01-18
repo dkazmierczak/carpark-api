@@ -22,4 +22,11 @@ public class ParkingSpace {
         this.timeIn = timeIn;
         this.occupied = true;
     }
+
+    public void vacate() {
+        this.vehicleReg = null;
+        this.vehicleType = null;
+        this.timeIn = null;
+        this.occupied = false;
+    }
 }

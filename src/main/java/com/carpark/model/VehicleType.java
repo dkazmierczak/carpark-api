@@ -21,4 +21,8 @@ public enum VehicleType {
         }
         throw new IllegalArgumentException("Invalid vehicle type code: " + code);
     }
+
+    public double getRatePerMinute() {
+        return ratePerMinute;
+    }
 }

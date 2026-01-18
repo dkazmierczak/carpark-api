@@ -37,4 +37,15 @@ public class ParkingController {
         ParkVehicleResponse response = parkingService.parkVehicle(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    /**
+     * POST /parking/bill
+     * Frees up vehicle's space and returns final charge
+     */
+    @PostMapping("/bill")
+    public ResponseEntity<BillResponse> generateBill(
+            @Valid @RequestBody BillRequest request) {
+        BillResponse response = parkingService.generateBillAndExit(request);
+        return ResponseEntity.ok(response);
+    }
 }
