@@ -15,4 +15,11 @@ public class ParkingSpace {
         this.spaceNumber = spaceNumber;
         this.occupied = false;
     }
+
+    public void park(String vehicleReg, VehicleType vehicleType, LocalDateTime timeIn) {
+        this.vehicleReg = vehicleReg;
+        this.vehicleType = vehicleType;
+        this.timeIn = timeIn;
+        this.occupied = true;
+    }
 }
