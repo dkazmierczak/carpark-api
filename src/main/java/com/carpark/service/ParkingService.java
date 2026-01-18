@@ -1,6 +1,9 @@
 package com.carpark.service;
 
 import com.carpark.dto.*;
+import com.carpark.exception.CarParkFullException;
+import com.carpark.exception.VehicleAlreadyParkedException;
+import com.carpark.exception.VehicleNotFoundException;
 import com.carpark.model.ParkingSpace;
 import com.carpark.model.VehicleType;
 import com.carpark.repository.ParkingRepository;
@@ -29,13 +32,13 @@ public class ParkingService {
 
     public ParkVehicleResponse parkVehicle(ParkVehicleRequest request) {
         if (parkingRepository.isVehicleParked(request.getVehicleReg())) {
-            // TODO exception
-            throw new RuntimeException();
+            throw new VehicleAlreadyParkedException(
+                    "Vehicle " + request.getVehicleReg() + " is already parked"
+            );
         }
 
         ParkingSpace space = parkingRepository.findFirstAvailableSpace()
-                //TODO exception
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new CarParkFullException("No available parking spaces"));
 
         VehicleType vehicleType = VehicleType.fromCode(request.getVehicleType());
         LocalDateTime timeIn = LocalDateTime.now();
@@ -50,8 +53,9 @@ public class ParkingService {
 
     public BillResponse generateBillAndExit(BillRequest request) {
         ParkingSpace space = parkingRepository.findByVehicleReg(request.getVehicleReg())
-                //TODO exception
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new VehicleNotFoundException(
+                        "Vehicle " + request.getVehicleReg() + " not found in car park"
+                ));
 
         LocalDateTime timeOut = LocalDateTime.now();
         double charge = calculateCharge(space.getTimeIn(), timeOut, space.getVehicleType());
